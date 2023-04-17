@@ -5,7 +5,7 @@
 
 /datum/map_config
 	// Metadata
-	var/config_filename = "_maps/metastation.json"
+	var/config_filename = "_maps/exodus.json"
 	var/defaulted = TRUE  // set to FALSE by LoadConfig() succeeding
 	// Config from maps.txt
 	var/config_max_users = 0
@@ -14,27 +14,27 @@
 	var/votable = FALSE
 
 	// Config actually from the JSON - should default to Meta
-	var/map_name = "Meta Station"
-	var/map_path = "map_files/MetaStation"
-	var/map_file = "MetaStation.dmm"
+	var/map_name = "Exodus"
+	var/map_path = "map_files/Exodus"
+	var/map_file = "Exodus.dmm"
 
 	var/traits = null
-	var/space_ruin_levels = 7
-	var/space_empty_levels = 1
+	var/space_ruin_levels = null
+	var/space_empty_levels = null
 	/// Boolean that tells us if this is a planetary station. (like IceBoxStation)
-	var/planetary = FALSE
+	var/planetary = TRUE
 
 	///The type of mining Z-level that should be loaded.
-	var/minetype = "lavaland"
+	var/minetype = null
 	///If no minetype is set, this will be the blacklist file used
 	var/blacklist_file
 
 	var/allow_custom_shuttles = TRUE
 	var/shuttles = list(
-		"cargo" = "cargo_skyrat",
-		"ferry" = "ferry_fancy",
-		"whiteship" = "whiteship_meta",
-		"emergency" = "emergency_skyrat") //SKYRAT EDIT CHANGE
+		"cargo" = null,
+		"ferry" = null,
+		"whiteship" = null,
+		"emergency" = null)
 
 	/// Dictionary of job sub-typepath to template changes dictionary
 	var/job_changes = list()
