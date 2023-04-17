@@ -13,37 +13,6 @@ Format:
 	votable (is this map votable)
 endmap
 
-map metastation
-	votable
-endmap
-
-map deltastation
-	votable
-endmap
-
-map kilostation
-endmap
-
-map icebox
-	votable
-endmap
-
-map tramstation
-	minplayers 35
-endmap
-
-map runtimestation
-endmap
-
-map multiz_debug
-endmap
-
-##SKYRAT MAPS##
-
-map blueshift
-	votable
-endmap
-
-map voidraptor
+map exodus
 	votable
 endmap
