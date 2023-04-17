@@ -2,16 +2,6 @@
 	"version": 1,
 	"map_name": "Exodus",
 	"map_path": "map_files/Exodus",
-	"map_file": "Exodus.dmm",
-	"shuttles": {
-		"cargo": "cargo_skyrat",
-		"ferry": "ferry_fancy",
-		"whiteship": "whiteship_meta",
-		"emergency": "emergency_meta"
-	},
-	"job_changes": {
-		"Cook": {
-			"additional_cqc_areas": ["/area/station/service/bar", "/area/station/commons/lounge"]
-		}
+	"map_file": "Exodus.dmm"
 	}
 }
