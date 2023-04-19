@@ -17,7 +17,7 @@
 	end_message = "<span class='notice'><font size=2>You start to hear the last of the rain as the sky begins to clear up.</font></span>"
 	end_overlay = "rain_gathering"
 	tag_weather = WEATHER_RAIN
-	area_types = list(/area/f13/wasteland, /area/f13/desert, /area/f13/farm, /area/f13/forest)
+	area_types = list(/area/exodus/plain)
 	protected_areas = list(/area/shuttle)
 	target_trait = ZTRAIT_STATION
 	protect_indoors = TRUE
@@ -33,12 +33,14 @@
 	var/datum/looping_sound/rain_sounds/sound_ao = new(list(), FALSE, TRUE)
 	var/datum/looping_sound/indoor_rain_sounds/sound_ai = new(list(), FALSE, TRUE)
 
+/*
 /datum/weather/rain/eventarea
 	area_types = list(/area/f13/wasteland/event)
 	probability = 0
 	target_trait = ZTRAIT_AWAY
 	weather_duration_lower = 18000
 	weather_duration_upper = 18000
+*/
 
 /datum/weather/rain/weather_act(mob/living/L)
 	if(iscarbon(L))
@@ -164,18 +166,18 @@
 	telegraph_duration = 300
 	telegraph_overlay = "fog"
 	telegraph_message = "<span class='notice'><font size=2>You see the fog rolling in.</font></span>"
-	telegraph_sound = 'sound/weather/fog.ogg' 
+	telegraph_sound = 'sound/weather/fog.ogg'
 	weather_sound = 'sound/weather/fog.ogg'
 
 	weather_message = "<span class='notice'><i>You can feel and see the moisture from the fog as it starts to roll in.</i></span>"
 	weather_overlay = "fog"
 	weather_duration_lower = 2400
 	weather_duration_upper = 7200
-	end_sound = 'sound/weather/fog.ogg' 
+	end_sound = 'sound/weather/fog.ogg'
 	end_duration = 250
 	end_message = "<span class='notice'><font size=2>The blanket of fog finally lifts up.</font></span>"
 	end_overlay = "fog"
-	area_types = list(/area/f13/wasteland, /area/f13/desert, /area/f13/farm, /area/f13/forest)
+	area_types = list(/area/exodus/plain)
 	protected_areas = list(/area/shuttle)
 	target_trait = ZTRAIT_STATION
 	protect_indoors = TRUE
