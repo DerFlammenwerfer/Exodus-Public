@@ -3,7 +3,7 @@
 	name = "ash storm"
 	desc = "An intense atmospheric storm lifts ash off of the planet's surface and billows it down across the area, dealing intense fire damage to the unprotected."
 
-	telegraph_message = "<span class='boldwarning'>An eerie moan rises on the wind. Sheets of burning ash blacken the horizon. Seek shelter.</span>"
+	telegraph_message = span_boldwarning("An eerie moan rises on the wind. Sheets of burning ash blacken the horizon. Seek shelter.")
 	telegraph_duration = 300
 	telegraph_overlay = "light_ash"
 
@@ -12,88 +12,149 @@
 	weather_duration_upper = 1200
 	weather_overlay = "ash_storm"
 
-	end_message = "<span class='boldannounce'>The shrieking wind whips away the last of the ash and falls to its usual murmur. It should be safe to go outside now.</span>"
+	end_message = span_boldannounce("The shrieking wind whips away the last of the ash and falls to its usual murmur. It should be safe to go outside now.")
 	end_duration = 300
 	end_overlay = "light_ash"
 
-	area_type = /area
+	area_types = list(
+		/area/f13/wasteland,
+		/area/f13/desert,
+		/area/f13/farm,
+		/area/f13/forest,
+		)
 	protect_indoors = TRUE
 	target_trait = ZTRAIT_ASHSTORM
+	tag_weather = WEATHER_SAND
 
-	immunity_type = TRAIT_ASHSTORM_IMMUNE
+	immunity_type = "ash"
 
-	probability = 90
+	probability = 0
 
 	barometer_predictable = TRUE
-	var/list/weak_sounds = list()
-	var/list/strong_sounds = list()
+
+	var/datum/looping_sound/active_outside_ashstorm/sound_ao = new(list(), FALSE, TRUE)
+	var/datum/looping_sound/active_inside_ashstorm/sound_ai = new(list(), FALSE, TRUE)
+	var/datum/looping_sound/weak_outside_ashstorm/sound_wo = new(list(), FALSE, TRUE)
+	var/datum/looping_sound/weak_inside_ashstorm/sound_wi = new(list(), FALSE, TRUE)
 
 /datum/weather/ash_storm/telegraph()
+	. = ..()
+	var/list/inside_areas = list()
+	var/list/outside_areas = list()
 	var/list/eligible_areas = list()
 	for (var/z in impacted_z_levels)
 		eligible_areas += SSmapping.areas_in_z["[z]"]
 	for(var/i in 1 to eligible_areas.len)
 		var/area/place = eligible_areas[i]
+		if(!place)
+			WARNING("Null area in eligible areas: [eligible_areas]")
+			continue
 		if(place.outdoors)
-			weak_sounds[place] = /datum/looping_sound/weak_outside_ashstorm
-			strong_sounds[place] = /datum/looping_sound/active_outside_ashstorm
+			outside_areas += place
 		else
-			weak_sounds[place] = /datum/looping_sound/weak_inside_ashstorm
-			strong_sounds[place] = /datum/looping_sound/active_inside_ashstorm
+			inside_areas += place
 		CHECK_TICK
 
-	//We modify this list instead of setting it to weak/stron sounds in order to preserve things that hold a reference to it
-	//It's essentially a playlist for a bunch of components that chose what sound to loop based on the area a player is in
-	GLOB.ash_storm_sounds += weak_sounds
-	return ..()
+	sound_ao.output_atoms = outside_areas
+	sound_ai.output_atoms = inside_areas
+	sound_wo.output_atoms = outside_areas
+	sound_wi.output_atoms = inside_areas
+
+	sound_wo.start()
+	sound_wi.start()
 
 /datum/weather/ash_storm/start()
-	GLOB.ash_storm_sounds -= weak_sounds
-	GLOB.ash_storm_sounds += strong_sounds
-	return ..()
+	. = ..()
+	sound_wo.stop()
+	sound_wi.stop()
+
+	sound_ao.start()
+	sound_ai.start()
 
 /datum/weather/ash_storm/wind_down()
-	GLOB.ash_storm_sounds -= strong_sounds
-	GLOB.ash_storm_sounds += weak_sounds
-	return ..()
+	. = ..()
+	sound_ao.stop()
+	sound_ai.stop()
+
+	sound_wo.start()
+	sound_wi.start()
 
 /datum/weather/ash_storm/end()
-	GLOB.ash_storm_sounds -= weak_sounds
-	return ..()
-
-/datum/weather/ash_storm/can_weather_act(mob/living/mob_to_check)
 	. = ..()
-	if(!. || !ishuman(mob_to_check))
+	sound_wo.stop()
+	sound_wi.stop()
+
+/datum/weather/ash_storm/proc/is_ash_immune(atom/L)
+	while (L && !isturf(L))
+		if(ismecha(L)) //Mechs are immune
+			return TRUE
+		if(ishuman(L)) //Are you immune?
+			var/mob/living/carbon/human/H = L
+			var/thermal_protection = H.easy_thermal_protection()
+			if(thermal_protection >= FIRE_IMMUNITY_MAX_TEMP_PROTECT)
+				return TRUE
+		if(isliving(L))// if we're a non immune mob inside an immune mob we have to reconsider if that mob is immune to protect ourselves
+			var/mob/living/the_mob = L
+			if("ash" in the_mob.weather_immunities)
+				return TRUE
+		L = L.loc //Check parent items immunities (recurses up to the turf)
+	return FALSE //RIP you
+
+/datum/weather/ash_storm/weather_act(mob/living/L)
+	if(is_ash_immune(L))
 		return
-	var/mob/living/carbon/human/human_to_check = mob_to_check
-	if(human_to_check.get_thermal_protection() >= FIRE_IMMUNITY_MAX_TEMP_PROTECT)
-		return FALSE
+	if(is_species(L, /datum/species/lizard/ashwalker))
+		if(!IS_STAMCRIT(L))
+			L.adjustStaminaLossBuffered(4)
+		return
+	L.adjustFireLoss(4)
 
-/datum/weather/ash_storm/weather_act(mob/living/victim)
-	victim.adjustFireLoss(4)
 
-/datum/weather/ash_storm/end()
-	. = ..()
-	for(var/turf/open/misc/asteroid/basalt/basalt as anything in GLOB.dug_up_basalt)
-		if(!(basalt.loc in impacted_areas) || !(basalt.z in impacted_z_levels))
-			continue
-		GLOB.dug_up_basalt -= basalt
-		basalt.dug = FALSE
-		basalt.icon_state = "[basalt.base_icon_state]"
-		if(prob(basalt.floor_variance))
-			basalt.icon_state += "[rand(0,12)]"
+/datum/weather/ash_storm/sandstorm
+	name = "sandstorm"
+	desc = "A passing sand storm blankets the area in harmless sands."
+	probability = 15
 
-//Emberfalls are the result of an ash storm passing by close to the playable area of lavaland. They have a 10% chance to trigger in place of an ash storm.
-/datum/weather/ash_storm/emberfall
-	name = "emberfall"
-	desc = "A passing ash storm blankets the area in harmless embers."
+	telegraph_message = span_userdanger("Sandstorm is coming to the area, decreasing overall visibility outside.")
 
-	weather_message = "<span class='notice'>Gentle embers waft down around you like grotesque snow. The storm seems to have passed you by...</span>"
-	weather_overlay = "light_ash"
+	weather_message = span_boldannounce("Sand waft down around you like grotesque snow. The sandstorm is here...")
 
-	end_message = "<span class='notice'>The emberfall slows, stops. Another layer of hardened soot to the basalt beneath your feet.</span>"
+	end_message = span_boldannounce("The sandstorm slows, stops. Another layer of sand to the ground beneath your feet.")
 	end_sound = null
 
 	aesthetic = TRUE
+	obscures_sight = TRUE // try seeing stuff now! YOU CANT!
 
-	probability = 10
+	target_trait = ZTRAIT_STATION
+
+/datum/weather/ash_storm/dust_event
+	name = "toxic cloud"
+	desc = "A mysterious red cloud, incredibly dangerous to most living things."
+
+	telegraph_message = span_boldwarning("On the horizon, a thick red cloud can be seen approaching the area. It is unlike anything you've ever seen before. Seek shelter, lest you want to find out what's in store for yourself.")
+	telegraph_duration = 3000
+	telegraph_overlay = "light_ash"
+
+	weather_message = "<span class='userdanger'><i>The red cloud is here, and it is incredibly dangerous to be in! Get inside!</i></span>"
+	weather_duration_lower = 108000 //Three hours. Lasts the whole round, basically
+	weather_duration_upper = 108000
+	weather_overlay = "ash_storm"
+
+	end_message = span_boldannounce("The cloud has passed over the region. It should be safe to go outside now.")
+	end_duration = 3000
+	end_overlay = "light_ash"
+
+	area_types = list(/area/f13/wasteland, /area/f13/desert, /area/f13/farm, /area/f13/forest)
+	protect_indoors = TRUE
+	target_trait = ZTRAIT_STATION
+
+	probability = 0
+
+/datum/weather/ash_storm/dust_event/weather_act(mob/living/L)
+	if(is_ash_immune(L))
+		return
+	if(is_species(L, /datum/species/lizard/ashwalker))
+		if(!IS_STAMCRIT(L))
+			L.adjustStaminaLossBuffered(4)
+		return
+	L.adjustToxLoss(7.5)

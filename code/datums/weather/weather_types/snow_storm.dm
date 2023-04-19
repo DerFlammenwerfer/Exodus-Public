@@ -1,9 +1,9 @@
 /datum/weather/snow_storm
 	name = "snow storm"
 	desc = "Harsh snowstorms roam the topside of this arctic planet, burying any area unfortunate enough to be in its path."
-	probability = 90
+	probability = 0
 
-	telegraph_message = "<span class='warning'>Drifting particles of snow begin to dust the surrounding area..</span>"
+	telegraph_message = span_warning("Drifting particles of snow begin to dust the surrounding area..")
 	telegraph_duration = 300
 	telegraph_overlay = "light_snow"
 
@@ -13,13 +13,14 @@
 	weather_duration_upper = 1500
 
 	end_duration = 100
-	end_message = "<span class='boldannounce'>The snowfall dies down, it should be safe to go outside again.</span>"
+	end_message = span_boldannounce("The snowfall dies down, it should be safe to go outside again.")
 
-	area_type = /area
+	tag_weather = WEATHER_SNOW
+	area_types = list(/area)
 	protect_indoors = TRUE
 	target_trait = ZTRAIT_SNOWSTORM
 
-	immunity_type = TRAIT_SNOWSTORM_IMMUNE
+	immunity_type = "snow"
 
 	barometer_predictable = TRUE
 
@@ -27,27 +28,3 @@
 /datum/weather/snow_storm/weather_act(mob/living/L)
 	L.adjust_bodytemperature(-rand(5,15))
 
-
-// since snowstorm is on a station z level, add extra checks to not annoy everyone
-/datum/weather/snow_storm/can_get_alert(mob/player)
-	if(!..())
-		return FALSE
-
-	if(!is_station_level(player.z))
-		return TRUE  // bypass checks
-
-	if(isobserver(player))
-		return TRUE
-
-	if(HAS_TRAIT(player, TRAIT_DETECT_STORM))
-		return TRUE
-
-	if(istype(get_area(player), /area/mine))
-		return TRUE
-
-
-	for(var/area/snow_area in impacted_areas)
-		if(locate(snow_area) in view(player))
-			return TRUE
-
-	return FALSE

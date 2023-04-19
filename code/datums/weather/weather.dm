@@ -12,22 +12,23 @@
 	var/name = "space wind"
 	/// description of weather
 	var/desc = "Heavy gusts of wind blanket the area, periodically knocking down anyone caught in the open."
+
 	/// The message displayed in chat to foreshadow the weather's beginning
-	var/telegraph_message = "<span class='warning'>The wind begins to pick up.</span>"
+	var/telegraph_message = span_warning("The wind begins to pick up.")
+
 	/// In deciseconds, how long from the beginning of the telegraph until the weather begins
 	var/telegraph_duration = 300
 	/// The sound file played to everyone on an affected z-level
 	var/telegraph_sound
 	/// The overlay applied to all tiles on the z-level
 	var/telegraph_overlay
-
 	/// Displayed in chat once the weather begins in earnest
-	var/weather_message = "<span class='userdanger'>The wind begins to blow ferociously!</span>"
-	/// In deciseconds, how long the weather lasts once it begins
+	var/weather_message = span_userdanger("The wind begins to blow ferociously!")
+	///In deciseconds, how long the weather lasts once it begins
 	var/weather_duration = 1200
-	/// See above - this is the lowest possible duration
+	///See above - this is the lowest possible duration
 	var/weather_duration_lower = 1200
-	/// See above - this is the highest possible duration
+	///See above - this is the highest possible duration
 	var/weather_duration_upper = 1500
 	/// Looping sound while weather is occuring
 	var/weather_sound
@@ -37,7 +38,7 @@
 	var/weather_color = null
 
 	/// Displayed once the weather is over
-	var/end_message = "<span class='danger'>The wind relents its assault.</span>"
+	var/end_message = span_danger("The wind relents its assault.")
 	/// In deciseconds, how long the "wind-down" graphic will appear before vanishing entirely
 	var/end_duration = 300
 	/// Sound that plays while weather is ending
@@ -45,35 +46,37 @@
 	/// Area overlay while weather is ending
 	var/end_overlay
 
-	/// Types of area to affect
-	var/area_type = /area/space
+	/// Types of area(s) to affect
+	var/area_types = list(/area/space)
+	/// Pulls a list of areas that are set as valid to have this weather, and uses that! see [code\__DEFINES\weather.dm] for details~
+	var/tag_weather
 	/// TRUE value protects areas with outdoors marked as false, regardless of area type
-	var/protect_indoors = FALSE
+	var/protect_indoors = TRUE
 	/// Areas to be affected by the weather, calculated when the weather begins
 	var/list/impacted_areas = list()
+	/// Is the weather particularly dangerous?
+	var/is_dangerous = TRUE // most are tbh
+	/// Does this make the area impossible to see through? Like walking through smoke
+	var/obscures_sight = FALSE
+
 	/// Areas that are protected and excluded from the affected areas.
 	var/list/protected_areas = list()
-	/// The list of z-levels that this weather is actively affecting
-	var/impacted_z_levels
+	/// The list of z-levels that can reasonably see the weather coming and get messages about it
+	var/list/impacted_z_levels = ABOVE_GROUND_Z_LEVELS
 
-	/// Since it's above everything else, this is the layer used by default. TURF_LAYER is below mobs and walls if you need to use that.
-	var/overlay_layer = AREA_LAYER
+	/// Since it's above everything else, this is the layer used by default. TURF_LAYER is below mobs and walls if you need to use that. 
+	var/overlay_layer = AREA_LAYER 
 	/// Plane for the overlay
-	var/overlay_plane = AREA_PLANE
-	/// If the weather has no purpose other than looks
+	var/overlay_plane = BLACKNESS_PLANE
+	/// If the weather has no purpose but aesthetics. 
 	var/aesthetic = FALSE
-	/// Used by mobs (or movables containing mobs, such as enviro bags) to prevent them from being affected by the weather.
-	var/immunity_type
-	/// If this bit of weather should also draw an overlay that's uneffected by lighting onto the area
-	/// Taken from weather_glow.dmi
-	var/use_glow = TRUE
-	/// List of all overlays to apply to our turfs
-	var/list/overlay_cache
+	/// Used by mobs to prevent them from being affected by the weather 
+	var/immunity_type = "storm"
 
 	/// The stage of the weather, from 1-4
 	var/stage = END_STAGE
 
-	/// Weight amongst other eligible weather. If zero, will never happen randomly.
+	/// Weight amongst other eligible weather. if zero, will never happen randomly.
 	var/probability = 0
 	/// The z-level trait to affect when run randomly or when not overridden.
 	var/target_trait = ZTRAIT_STATION
@@ -82,12 +85,20 @@
 	var/barometer_predictable = FALSE
 	/// For barometers to know when the next storm will hit
 	var/next_hit_time = 0
-	/// This causes the weather to only end if forced to
-	var/perpetual = FALSE
+	
+	var/affects_turfs = FALSE //Does this weather affect turfs at all?
+	var/turfs_impacted = FALSE // Did this weather already impact turfs?
+	var/carbons_only = FALSE //Does this weather affect only carbon mobs?
 
 /datum/weather/New(z_levels)
 	..()
 	impacted_z_levels = z_levels
+	telegraph()
+
+/datum/weather/Destroy(force, ...)
+	. = ..()
+	if(SSweather.current_weather == src)
+		SSweather.end_weather()
 
 /**
  * Telegraphs the beginning of the weather on the impacted z levels
@@ -97,26 +108,35 @@
  *
  */
 /datum/weather/proc/telegraph()
-	if(stage == STARTUP_STAGE)
+	if(stage == STARTUP_STAGE || !tag_weather)
+		end()
 		return
-	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_TELEGRAPH(type))
+	if(tag_weather == WEATHER_ALL_AREAS) // pretty much just for the floor is lava, which works in theory
+		var/list/affectareas = list()
+		for(var/V in get_areas(/area))
+			var/area/A = V
+			affectareas |= A
+			if(A.sub_areas)
+				affectareas |= A.sub_areas
+		for(var/V in protected_areas)
+			affectareas -= get_areas(V)
+		for(var/V in affectareas)
+			var/area/A = V
+			if(protect_indoors && !A.outdoors)
+				continue
+			if(A.z in impacted_z_levels)
+				impacted_areas |= A
+	else if(LAZYLEN(GLOB.area_weather_list[tag_weather]))
+		impacted_areas |= GLOB.area_weather_list[tag_weather]
+	if(!LAZYLEN(impacted_areas))
+		end()
+		return
 	stage = STARTUP_STAGE
-	var/list/affectareas = list()
-	for(var/V in get_areas(area_type))
-		affectareas += V
-	for(var/V in protected_areas)
-		affectareas -= get_areas(V)
-	for(var/V in affectareas)
-		var/area/A = V
-		if(protect_indoors && !A.outdoors)
-			continue
-		if(A.z in impacted_z_levels)
-			impacted_areas |= A
 	weather_duration = rand(weather_duration_lower, weather_duration_upper)
-	SSweather.processing |= src
+	START_PROCESSING(SSweather, src) //The reason this doesn't start and stop at main stage is because processing list is also used to see active running weathers (for example, you wouldn't want two ash storms starting at once.)
 	update_areas()
-	send_alert(telegraph_message, telegraph_sound)
-	addtimer(CALLBACK(src, PROC_REF(start)), telegraph_duration)
+	alert_players(telegraph_message, telegraph_sound)
+	addtimer(CALLBACK(src, .proc/start), telegraph_duration)
 
 /**
  * Starts the actual weather and effects from it
@@ -128,12 +148,10 @@
 /datum/weather/proc/start()
 	if(stage >= MAIN_STAGE)
 		return
-	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_START(type))
 	stage = MAIN_STAGE
 	update_areas()
-	send_alert(weather_message, weather_sound)
-	if(!perpetual)
-		addtimer(CALLBACK(src, PROC_REF(wind_down)), weather_duration)
+	alert_players(weather_message, weather_sound)
+	addtimer(CALLBACK(src, .proc/wind_down), weather_duration)
 
 /**
  * Weather enters the winding down phase, stops effects
@@ -145,12 +163,21 @@
 /datum/weather/proc/wind_down()
 	if(stage >= WIND_DOWN_STAGE)
 		return
-	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_WINDDOWN(type))
 	stage = WIND_DOWN_STAGE
 	update_areas()
-	send_alert(end_message, end_sound)
-	addtimer(CALLBACK(src, PROC_REF(end)), end_duration)
+	alert_players(end_message, end_sound)
+	addtimer(CALLBACK(src, .proc/end), end_duration)
 
+/datum/weather/proc/alert_players(message, sound_play)
+	if(!message && !sound_play)
+		return FALSE
+	for(var/M in GLOB.player_list)
+		var/turf/mob_turf = get_turf(M)
+		if(mob_turf && (mob_turf.z in impacted_z_levels))
+			if(message)
+				to_chat(M, message)
+			if(end_sound)
+				SEND_SOUND(M, sound(sound_play))
 /**
  * Fully ends the weather
  *
@@ -158,55 +185,43 @@
  * Removes weather from processing completely
  *
  */
-/datum/weather/proc/end()
+/datum/weather/proc/end(forced)
 	if(stage == END_STAGE)
-		return
-	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_END(type))
+		return 1
 	stage = END_STAGE
-	SSweather.processing -= src
+	STOP_PROCESSING(SSweather, src)
 	update_areas()
+	SSweather.end_weather(TRUE, TRUE, FALSE)
+	if(forced)
+		alert_players(end_message, end_sound)
+	qdel(src)
 
-// handles sending all alerts
-/datum/weather/proc/send_alert(alert_msg, alert_sfx)
-	for(var/z_level in impacted_z_levels)
-		for(var/mob/player as anything in SSmobs.clients_by_zlevel[z_level])
-			if(!can_get_alert(player))
-				continue
-			if(alert_msg)
-				to_chat(player, alert_msg)
-			if(alert_sfx)
-				SEND_SOUND(player, sound(alert_sfx))
-
-// the checks for if a mob should recieve alerts, returns TRUE if can
-/datum/weather/proc/can_get_alert(mob/player)
-	var/turf/mob_turf = get_turf(player)
-	return !isnull(mob_turf)
+/datum/weather/process()
+	if(aesthetic || (stage != MAIN_STAGE))
+		return
+	if(!turfs_impacted && affects_turfs)
+		turfs_impacted = TRUE
+		for(var/i in impacted_areas)
+			var/area/A = i
+			for(var/turf/T in get_area_turfs(A))
+				weather_act_turf(T)
+	for(var/i in (carbons_only ? GLOB.carbon_list : GLOB.mob_living_list))
+		var/mob/living/L = i
+		if(can_weather_act(L))
+			weather_act(L)
 
 /**
  * Returns TRUE if the living mob can be affected by the weather
  *
  */
-/datum/weather/proc/can_weather_act(mob/living/mob_to_check)
-	var/turf/mob_turf = get_turf(mob_to_check)
-
-	if(!mob_turf)
+/datum/weather/proc/can_weather_act(mob/living/L)
+/* 	var/turf/mob_turf = get_turf(L)
+	if(mob_turf && !(mob_turf.z in impacted_z_levels))
+		return */
+	if(immunity_type in L.weather_immunities)
 		return
-
-	if(!(mob_turf.z in impacted_z_levels))
+	if(!(get_area(L) in impacted_areas))
 		return
-
-	if((immunity_type && HAS_TRAIT(mob_to_check, immunity_type)) || HAS_TRAIT(mob_to_check, TRAIT_WEATHER_IMMUNE))
-		return
-
-	var/atom/loc_to_check = mob_to_check.loc
-	while(loc_to_check != mob_turf)
-		if((immunity_type && HAS_TRAIT(loc_to_check, immunity_type)) || HAS_TRAIT(loc_to_check, TRAIT_WEATHER_IMMUNE))
-			return
-		loc_to_check = loc_to_check.loc
-
-	if(!(get_area(mob_to_check) in impacted_areas))
-		return
-
 	return TRUE
 
 /**
@@ -217,49 +232,39 @@
 	return
 
 /**
+ * Affects a turf, ONCE, with whatever the weather does
+ *
+ */
+/datum/weather/proc/weather_act_turf(turf/T)
+	return
+
+
+/**
  * Updates the overlays on impacted areas
  *
  */
 /datum/weather/proc/update_areas()
-	var/list/new_overlay_cache = generate_overlay_cache()
-	for(var/area/impacted as anything in impacted_areas)
-		if(length(overlay_cache))
-			impacted.overlays -= overlay_cache
-		if(length(new_overlay_cache))
-			impacted.overlays += new_overlay_cache
+	for(var/V in impacted_areas)
+		var/area/N = V
+		N.layer = overlay_layer
+		N.icon = 'icons/effects/weather_effects.dmi'
+		N.color = weather_color
+		switch(stage)
+			if(STARTUP_STAGE)
+				N.icon_state = telegraph_overlay
+			if(MAIN_STAGE)
+				N.icon_state = weather_overlay
+				if(obscures_sight)
+					N.set_opacity(TRUE)
+			if(WIND_DOWN_STAGE)
+				N.icon_state = end_overlay
+				if(obscures_sight)
+					N.set_opacity(FALSE)
+			if(END_STAGE)
+				N.color = null
+				N.icon_state = ""
+				N.icon = 'icons/turf/areas.dmi'
+				N.layer = AREA_LAYER //Just default back to normal area stuff since I assume setting a var is faster than initial
+				if(obscures_sight) // just in case
+					N.set_opacity(FALSE)
 
-	overlay_cache = new_overlay_cache
-
-/// Returns a list of visual offset -> overlays to use
-/datum/weather/proc/generate_overlay_cache()
-	// We're ending, so no overlays at all
-	if(stage == END_STAGE)
-		return list()
-
-	var/weather_state = ""
-	switch(stage)
-		if(STARTUP_STAGE)
-			weather_state = telegraph_overlay
-		if(MAIN_STAGE)
-			weather_state = weather_overlay
-		if(WIND_DOWN_STAGE)
-			weather_state = end_overlay
-
-	// Use all possible offsets
-	// Yes this is a bit annoying, but it's too slow to calculate and store these from turfs, and it shouldn't (I hope) look weird
-	var/list/gen_overlay_cache = list()
-	for(var/offset in 0 to SSmapping.max_plane_offset)
-		// Note: what we do here is effectively apply two overlays to each area, for every unique multiz layer they inhabit
-		// One is the base, which will be masked by lighting. the other is "glowing", and provides a nice contrast
-		// This method of applying one overlay per z layer has some minor downsides, in that it could lead to improperly doubled effects if some have alpha
-		// I prefer it to creating 2 extra plane masters however, so it's a cost I'm willing to pay
-		// LU
-		var/mutable_appearance/glow_overlay = mutable_appearance('icons/effects/glow_weather.dmi', weather_state, overlay_layer, null, ABOVE_LIGHTING_PLANE, 100, offset_const = offset)
-		glow_overlay.color = weather_color
-		gen_overlay_cache += glow_overlay
-
-		var/mutable_appearance/weather_overlay = mutable_appearance('icons/effects/weather_effects.dmi', weather_state, overlay_layer, plane = overlay_plane, offset_const = offset)
-		weather_overlay.color = weather_color
-		gen_overlay_cache += weather_overlay
-
-	return gen_overlay_cache

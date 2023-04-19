@@ -1,69 +1,57 @@
-//Radiation storms occur when the station passes through an irradiated area, and irradiate anyone not standing in protected areas (maintenance, emergency storage, etc.)
 /datum/weather/rad_storm
 	name = "radiation storm"
-	desc = "A cloud of intense radiation passes through the area dealing rad damage to those who are unprotected."
+	desc = "A thunderstorm of intense radiation passes through the area dealing radiation damage to those who are unprotected."
+	probability = 3
 
-	telegraph_duration = 400
-	telegraph_message = "<span class='danger'>The air begins to grow warm.</span>"
+	telegraph_duration = 700
+	telegraph_message = span_userdanger("The skies slowly turn into a glowing green, distant distorted thunder can be heard as dark clouds approach.")
+	telegraph_sound = 'modular_sunset/sound/weather/radstorm2.ogg'
+
 
 	weather_message = "<span class='userdanger'><i>You feel waves of heat wash over you! Find shelter!</i></span>"
 	weather_overlay = "ash_storm"
-	weather_duration_lower = 600
-	weather_duration_upper = 1500
+	weather_duration_lower = 1500
+	weather_duration_upper = 3000
 	weather_color = "green"
-	weather_sound = 'sound/misc/bloblarm.ogg'
+	weather_sound = 'modular_sunset/sound/weather/radstorm.ogg'
 
 	end_duration = 100
-	end_message = "<span class='notice'>The air seems to be cooling off again.</span>"
+	end_message = span_userdanger("The air seems to be cooling off again as the radiation storm passes, the sky returning to it's normal color.")
 
-	area_type = /area
-	protected_areas = list(/area/station/maintenance, /area/station/ai_monitored/turret_protected/ai_upload, /area/station/ai_monitored/turret_protected/ai_upload_foyer,
-							/area/station/ai_monitored/turret_protected/aisat/maint, /area/station/ai_monitored/command/storage/satellite,
-							/area/station/ai_monitored/turret_protected/ai, /area/station/commons/storage/emergency/starboard, /area/station/commons/storage/emergency/port,
-							/area/shuttle, /area/station/security/prison/safe, /area/station/security/prison/toilet, /area/icemoon/underground)
+	tag_weather = WEATHER_RADS
+	area_types = list(/area/f13/wasteland, /area/f13/desert, /area/f13/farm, /area/f13/forest)
+	protected_areas = list(
+		/area/maintenance,
+		/area/ai_monitored/turret_protected/ai_upload,
+		/area/ai_monitored/turret_protected/ai_upload_foyer,
+		/area/ai_monitored/turret_protected/ai,
+		/area/storage/emergency/starboard,
+		/area/storage/emergency/port,
+		/area/shuttle,
+		/area/security/prison,
+		/area/ruin,
+		/area/space/nearstation,
+		/area/icemoon
+		)
 	target_trait = ZTRAIT_STATION
 
-	immunity_type = TRAIT_RADSTORM_IMMUNE
+	immunity_type = "rad"
+
+	var/radiation_intensity = 100
 
 /datum/weather/rad_storm/telegraph()
 	..()
 	status_alarm(TRUE)
 
-
 /datum/weather/rad_storm/weather_act(mob/living/L)
-	if(!prob(40))
-		return
-
-	if(!ishuman(L))
-		return
-
-	var/mob/living/carbon/human/H = L
-	if(!H.dna || HAS_TRAIT(H, TRAIT_GENELESS) || H.status_flags & GODMODE)
-		return
-
-	if(HAS_TRAIT(H, TRAIT_RADIMMUNE))
-		return
-
-	if (SSradiation.wearing_rad_protected_clothing(H))
-		return
-
-	H.random_mutate_unique_identity()
-	H.random_mutate_unique_features()
-
-	if(prob(50))
-		if(prob(90))
-			H.easy_random_mutate(NEGATIVE+MINOR_NEGATIVE)
-		else
-			H.easy_random_mutate(POSITIVE)
-		H.domutcheck()
+	L.rad_act(rand(10,20))
 
 /datum/weather/rad_storm/end()
 	if(..())
 		return
-	priority_announce("The radiation threat has passed. Please return to your workplaces.", "Anomaly Alert", ANNOUNCER_RADIATIONPASSED) //SKYRAT EDIT CHANGE
 	status_alarm(FALSE)
 
-/datum/weather/rad_storm/proc/status_alarm(active) //Makes the status displays show the radiation warning for those who missed the announcement.
+/datum/weather/rad_storm/proc/status_alarm(active)	//Makes the status displays show the radiation warning for those who missed the announcement.
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 	if(!frequency)
 		return
