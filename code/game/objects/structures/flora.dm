@@ -614,7 +614,7 @@ GLOBAL_LIST_EMPTY(flora_uprooting_tools_typepaths)
 
 /obj/structure/flora/bush
 	name = "bush"
-	desc = "Some type of shrubbery. Known for causing considerable economic stress on designers."
+	desc = "Some type of shrubbery. Plant life continues to endure."
 	icon = 'icons/obj/flora/ausflora.dmi'
 	icon_state = "firstbush_1"
 	flora_flags = FLORA_HERBAL
@@ -858,6 +858,53 @@ GLOBAL_LIST_EMPTY(flora_uprooting_tools_typepaths)
 /obj/structure/flora/bush/large/style_random/Initialize(mapload)
 	. = ..()
 	icon_state = "bush[rand(1, 3)]"
+
+
+
+
+
+/obj/structure/flora/bush/tallgrass
+	icon_state = "tall_grass_1"
+
+/obj/structure/flora/bush/tallgrass/style_2
+	icon_state = "tall_grass_2"
+
+/obj/structure/flora/bush/tallgrass/style_3
+	icon_state = "tall_grass_3"
+
+/obj/structure/flora/bush/tallgrass/style_4
+	icon_state = "tall_grass_4"
+
+/obj/structure/flora/bush/tallgrass/style_5
+	icon_state = "tall_grass_5"
+
+/obj/structure/flora/bush/tallgrass/style_6
+	icon_state = "tall_grass_6"
+
+/obj/structure/flora/bush/tallgrass/style_7
+	icon_state = "tall_grass_7"
+
+/obj/structure/flora/bush/tallgrass/style_8
+	icon_state = "tall_grass_8"
+
+/obj/structure/flora/bush/tallgrass/style_random/Initialize(mapload)
+	. = ..()
+	icon_state = "tall_grass_[rand(1, 8)]"
+
+
+/obj/structure/flora/bush/twig
+	name = "twigs"
+	desc = "The decaying remnants of some sort of flora."
+	icon_state = "twig_1"
+/obj/structure/flora/bush/twig/style_2
+	icon_state = "twig_2"
+/obj/structure/flora/bush/twig/style_3
+	icon_state = "twig_3"
+/obj/structure/flora/bush/twig/style_4
+	icon_state = "twig_4"
+/obj/structure/flora/bush/twig/style_random/Initialize(mapload)
+	. = ..()
+	icon_state = "twig_[rand(1, 4)]"
 
 /*********
  * Rocks *
