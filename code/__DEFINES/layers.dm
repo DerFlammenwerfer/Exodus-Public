@@ -123,6 +123,8 @@
 //FLOOR_PLANE layers
 #define CULT_OVERLAY_LAYER 2.01
 #define MID_TURF_LAYER 2.02
+#define ABOVE_MID_TURF_LAYER 2.025
+#define ABOVE_ABOVE_MID_TURF_LAYER 2.0275
 #define HIGH_TURF_LAYER 2.03
 #define TURF_PLATING_DECAL_LAYER 2.031
 #define TURF_DECAL_LAYER 2.039 //Makes turf decals appear in DM how they will look inworld.
