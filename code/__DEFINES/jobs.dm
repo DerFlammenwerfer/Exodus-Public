@@ -128,6 +128,34 @@
 #define JOB_SOLFED_LIASON "SolFed Liason"
 // SKYRAT EDIT ADDITION END
 
+//Civgov
+#define JOB_MAYOR "Mayor"
+#define JOB_TREASURER "Treasurer"
+#define JOB_MERCHANT "Merchant"
+#define JOB_TAVERNKEEPER "Tavernkeeper"
+#define JOB_CUSTODIAN "Custodian"
+#define JOB_RESIDENT "Resident"
+
+//Battalion
+#define JOB_SHERIFF "Sheriff"
+#define JOB_TROOPER "Trooper"
+#define JOB_RANGER "Ranger"
+#define JOB_CORPSMAN "Corpsman"
+#define JOB_REGULAR "Regular"
+#define JOB_VOLUNTEER "Volunteer"
+
+//Reclamation
+#define JOB_RECLAMATION_RECLAIMER "Reclaimer"
+#define JOB_RECLAMATION_ENGINEER "Engineer"
+#define JOB_RECLAMATION_EXPLORER_SENIOR "Senior Explorer"
+#define JOB_RECLAMATION_EXPLORER "Explorer"
+
+//Survival
+#define JOB_RECLAMATION_DOCTOR "Doctor"
+#define JOB_RECLAMATION_ECOLOGIST "Ecologist"
+#define JOB_RECLAMATION_MACHINIST "Machinist"
+#define JOB_RECLAMATION_RESEARCHER "Researcher"
+
 
 #define JOB_DISPLAY_ORDER_ASSISTANT 1
 #define JOB_DISPLAY_ORDER_CAPTAIN 2
@@ -176,6 +204,33 @@
 #define JOB_DISPLAY_ORDER_CUSTOMS_AGENT 45 //SKYRAT EDIT ADDITION
 #define JOB_DISPLAY_ORDER_BLACKSMITH 46 //Budder Edit.
 
+
+
+
+#define JOB_DISPLAY_ORDER_RESIDENT 47
+#define JOB_DISPLAY_ORDER_MAYOR 48
+#define JOB_DISPLAY_ORDER_TREASURER 49
+#define JOB_DISPLAY_ORDER_MERCHANT 50
+#define JOB_DISPLAY_ORDER_TAVERNKEEPER 51
+#define JOB_DISPLAY_ORDER_CUSTODIAN 52
+#define JOB_DISPLAY_ORDER_SHERIFF 53
+#define JOB_DISPLAY_ORDER_TROOPER 54
+#define JOB_DISPLAY_ORDER_RANGER 55
+#define JOB_DISPLAY_ORDER_CORPSMAN 56
+#define JOB_DISPLAY_ORDER_REGULAR 57
+#define JOB_DISPLAY_ORDER_VOLUNTEER 58
+#define JOB_DISPLAY_ORDER_RECLAIMER 59
+#define JOB_DISPLAY_ORDER_ENGINEER 60
+#define JOB_DISPLAY_ORDER_EXPLORER_SENIOR 61
+#define JOB_DISPLAY_ORDER_EXPLORER 62
+#define JOB_DISPLAY_ORDER_DOCTOR 63
+#define JOB_DISPLAY_ORDER_ECOLOGIST 64
+#define JOB_DISPLAY_ORDER_MACHINIST 65
+#define JOB_DISPLAY_ORDER_RESEARCHER 66
+
+
+
+
 #define DEPARTMENT_UNASSIGNED "No Department"
 
 #define DEPARTMENT_BITFLAG_SECURITY (1<<0)
@@ -200,6 +255,14 @@
 #define DEPARTMENT_CAPTAIN "Captain"
 #define DEPARTMENT_BITFLAG_CENTRAL_COMMAND (1<<10) //SKYRAT EDIT CHANGE
 #define DEPARTMENT_CENTRAL_COMMAND "Central Command" //SKYRAT EDIT CHANGE
+#define DEPARTMENT_BITFLAG_CIVGOV (1<<11)
+#define DEPARTMENT_CIVGOV "Odessa"
+#define DEPARTMENT_BITFLAG_BATTALION (1<<12)
+#define DEPARTMENT_BATTALION "Commonwealth 1st Battalion"
+#define DEPARTMENT_BITFLAG_RECLAMATION (1<<14)
+#define DEPARTMENT_RECLAMATION "Frontier Reclamation Committee"
+#define DEPARTMENT_BITFLAG_SURVIVAL (1<<15)
+#define DEPARTMENT_SURVIVAL "Joint Survival Initiative"
 
 /* Job datum job_flags */
 /// Whether the mob is announced on arrival.
@@ -223,6 +286,7 @@
 
 #define FACTION_NONE "None"
 #define FACTION_STATION "Station"
+#define FACTION_COMMONWEALTH "Orion Spur Commonwealth"
 
 // Variable macros used to declare who is the supervisor for a given job, announced to the player when they join as any given job.
 #define SUPERVISOR_CAPTAIN "the Captain"

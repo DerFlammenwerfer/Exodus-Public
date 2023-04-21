@@ -137,3 +137,40 @@
 /// Catch-all department for undefined jobs.
 /datum/job_department/undefined
 	display_order = 10
+
+
+/datum/job_department/civgov
+	department_name = DEPARTMENT_CIVGOV
+	department_bitflags = DEPARTMENT_BITFLAG_CIVGOV
+	department_head = /datum/job/mayor
+	department_experience_type = EXP_TYPE_SECURITY
+	display_order = 11
+	label_class = "civgov"
+	ui_color = "#6681a5"
+
+/datum/job_department/battalion
+	department_name = DEPARTMENT_BATTALION
+	department_bitflags = DEPARTMENT_BITFLAG_BATTALION
+	department_head = /datum/job/sheriff
+	department_experience_type = EXP_TYPE_SECURITY
+	display_order = 12
+	label_class = "battalion"
+	ui_color = "#d46a78"
+
+/datum/job_department/reclamation
+	department_name = DEPARTMENT_RECLAMATION
+	department_bitflags = DEPARTMENT_BITFLAG_RECLAMATION
+	department_head = /datum/job/mayor
+	department_experience_type = EXP_TYPE_SECURITY
+	display_order = 13
+	label_class = "reclamation"
+	ui_color = "#dfb567"
+
+/datum/job_department/survival
+	department_name = DEPARTMENT_SURVIVAL
+	department_bitflags = DEPARTMENT_BITFLAG_SURVIVAL
+	department_head = /datum/job/mayor
+	department_experience_type = EXP_TYPE_SECURITY
+	display_order = 14
+	label_class = "survival"
+	ui_color = "#c973c9"
