@@ -145,16 +145,16 @@
 #define JOB_VOLUNTEER "Volunteer"
 
 //Reclamation
-#define JOB_RECLAMATION_RECLAIMER "Reclaimer"
-#define JOB_RECLAMATION_ENGINEER "Engineer"
-#define JOB_RECLAMATION_EXPLORER_SENIOR "Senior Explorer"
-#define JOB_RECLAMATION_EXPLORER "Explorer"
+#define JOB_RECLAIMER "Reclaimer"
+#define JOB_ENGINEER "Engineer"
+#define JOB_EXPLORER_SENIOR "Senior Explorer"
+#define JOB_EXPLORER "Explorer"
 
 //Survival
-#define JOB_RECLAMATION_DOCTOR "Doctor"
-#define JOB_RECLAMATION_ECOLOGIST "Ecologist"
-#define JOB_RECLAMATION_MACHINIST "Machinist"
-#define JOB_RECLAMATION_RESEARCHER "Researcher"
+#define JOB_DOCTOR "Doctor"
+#define JOB_ECOLOGIST "Ecologist"
+#define JOB_MACHINIST "Machinist"
+#define JOB_RESEARCHER "Researcher"
 
 
 #define JOB_DISPLAY_ORDER_ASSISTANT 1

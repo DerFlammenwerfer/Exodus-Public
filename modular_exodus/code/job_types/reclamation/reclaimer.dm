@@ -1,24 +1,24 @@
-/datum/job/battalion_volunteer
-	title = JOB_BATTALION_VOLUNTEER
+/datum/job/reclaimer
+	title = JOB_RECLAIMER
 	description = "Patrol the walls, work on gate and prison detail, \
 		and follow orders given as a recruit of the CIB."
-	department_head = list(JOB_BATTALION_SHERIFF)
+	department_head = list(JOB_MAYOR)
 	faction = FACTION_STATION
 	total_positions = 8 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SET TO 8, WAS 5
 	spawn_positions = 8 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SEE ABOVE
-	supervisors = "the Sheriff"
+	supervisors = "the Mayor"
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
-	config_tag = "BATTALION_VOLUNTEER"
+	config_tag = "RECLAIMER"
 
-	outfit = /datum/outfit/job/security
+	outfit = /datum/outfit/job/reclaimer
 
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SEC
 
-	display_order = JOB_DISPLAY_ORDER_BATTALION_VOLUNTEER
+	display_order = JOB_DISPLAY_ORDER_RECLAIMER
 	departments_list = list(
-		/datum/job_department/security,
+		/datum/job_department/reclamation,
 		)
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
@@ -27,11 +27,11 @@
 
 
 
-/datum/outfit/job/battalion_volunteer
-	name = "Security Officer"
-	jobtype = /datum/job/battalion_volunteer
+/datum/outfit/job/reclaimer
+	name = "Reclaimer"
+	jobtype = /datum/job/reclaimer
 
-	id_trim = /datum/id_trim/job/battalion_volunteer
+	id_trim = /datum/id_trim/job/reclaimer
 	uniform = null
 	suit = null
 	suit_store = null

@@ -1,5 +1,3 @@
-//battalion
-
 /datum/id_trim/job/volunteer
 	assignment = "Volunteer"
 	trim_state = "trim_securityofficer"
