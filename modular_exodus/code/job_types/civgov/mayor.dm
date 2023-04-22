@@ -28,7 +28,7 @@
 
 
 /datum/outfit/job/mayor
-	name = "Treasurer"
+	name = "Mayor"
 	jobtype = /datum/job/mayor
 
 	id_trim = /datum/id_trim/job/mayor
