@@ -1,12 +1,12 @@
 /datum/job/explorer
 	title = JOB_EXPLORER
-	description = "Patrol the walls, work on gate and prison detail, \
-		and follow orders given as a recruit of the CIB."
+	description = "Scout, mine, hunt, and salvage as part of \
+		the rank and file of the adventurous FRC."
 	department_head = list(JOB_MAYOR)
 	faction = FACTION_STATION
 	total_positions = 8 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SET TO 8, WAS 5
 	spawn_positions = 8 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SEE ABOVE
-	supervisors = "the Mayor"
+	supervisors = "the Reclaimer and the laws of Odessa"
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "EXPLORER"

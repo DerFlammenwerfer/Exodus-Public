@@ -1,12 +1,12 @@
 /datum/job/merchant
 	title = JOB_MERCHANT
-	description = "Patrol the walls, work on gate and prison detail, \
-		and follow orders given as a recruit of the CIB."
+	description = "Work as one of the tradespeople of Odessa, \
+		selling all manner of wares and fattening your purse."
 	department_head = list(JOB_MAYOR)
 	faction = FACTION_STATION
 	total_positions = 2 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SET TO 8, WAS 5
 	spawn_positions = 2 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SEE ABOVE
-	supervisors = "the Mayor"
+	supervisors = "the Mayor and thelaws of Odessa"
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "MERCHANT"
