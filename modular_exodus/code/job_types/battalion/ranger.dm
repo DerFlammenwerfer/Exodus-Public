@@ -1,17 +1,17 @@
 /datum/job/ranger
 	title = JOB_RANGER
-	description = "Patrol the walls, work on gate and prison detail, \
-		and follow orders given as a recruit of the CIB."
+	description = "Investigate crimes, gather evidence, and enforce \
+		the often murky path to justice as a detective of the CIB."
 	department_head = list(JOB_SHERIFF)
 	faction = FACTION_STATION
 	total_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SET TO 8, WAS 5
 	spawn_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SEE ABOVE
-	supervisors = "the Sheriff"
+	supervisors = "the Sheriff and the laws of Odessa"
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "RANGER"
 
-	outfit = /datum/outfit/job/security
+	outfit = /datum/outfit/job/ranger
 
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SEC

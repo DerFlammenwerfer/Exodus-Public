@@ -1,17 +1,17 @@
 /datum/job/regular
 	title = JOB_REGULAR
-	description = "Patrol the walls, work on gate and prison detail, \
-		and follow orders given as a recruit of the CIB."
+	description = "Maintain law and order, search and rescue, \
+		and fulfill your duty within the main ranks of the CIB."
 	department_head = list(JOB_SHERIFF)
 	faction = FACTION_STATION
 	total_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SET TO 8, WAS 5
 	spawn_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SEE ABOVE
-	supervisors = "the Sheriff"
+	supervisors = "the Sheriff and the laws of Odessa"
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "REGULAR"
 
-	outfit = /datum/outfit/job/security
+	outfit = /datum/outfit/job/regular
 
 	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SEC
