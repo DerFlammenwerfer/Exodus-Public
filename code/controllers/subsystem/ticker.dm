@@ -377,10 +377,9 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
-	GLOB.security_officer_distribution = decide_security_officer_departments(
-		shuffle(GLOB.new_player_list),
-		shuffle(GLOB.available_depts),
-	)
+	/*GLOB.security_officer_distribution = decide_security_officer_departments(
+	shuffle(GLOB.new_player_list),
+	)*/
 
 	var/captainless = TRUE
 
@@ -469,7 +468,7 @@ SUBSYSTEM_DEF(ticker)
 			var/preference = client?.prefs?.read_preference(/datum/preference/choiced/security_department)
 			officer_preferences += preference
 
-	var/distribution = get_officer_departments(officer_preferences, departments)
+	var/distribution  /*= get_officer_departments(officer_preferences, departments)*/
 
 	var/list/output = list()
 
