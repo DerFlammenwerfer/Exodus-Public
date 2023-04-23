@@ -16,14 +16,13 @@
 	desired_atom = /mob/living/simple_animal/pet/poppy
 
 // Structures
-/datum/area_spawn/secmed_locker
-	target_areas = list(/area/station/security/medical, /area/station/security/lockers)
-	desired_atom = /obj/structure/closet/secure_closet/security_medic
 
+/*
 /datum/area_spawn/blueshield_locker
 	target_areas = list(/area/station/command/heads_quarters/captain, /area/station/command/bridge)
 	desired_atom = /obj/structure/closet/secure_closet/blueshield
 	mode = AREA_SPAWN_MODE_HUG_WALL
+*/
 
 /datum/area_spawn/command_drobe
 	target_areas = list(/area/station/command/meeting_room, /area/station/command/meeting_room/council, /area/station/command/bridge)
@@ -68,6 +67,7 @@
 	mode = AREA_SPAWN_MODE_MOUNT_WALL
 
 // Job spawners
+/*
 /datum/area_spawn/secmed_landmark
 	target_areas = list(/area/station/security/medical, /area/station/security/brig)
 	desired_atom = /obj/effect/landmark/start/security_medic
@@ -99,7 +99,7 @@
 /datum/area_spawn/customs_agent_landmark
 	desired_atom = /obj/effect/landmark/start/customs_agent
 	target_areas = list(/area/station/security/checkpoint/supply, /area/station/cargo/storage)
-
+*/
 /datum/area_spawn_over/prison_curtains
 	desired_atom = /obj/structure/curtain/cloth/prison
 	over_atoms = list(/obj/structure/window/reinforced/fulltile, /obj/machinery/door/airlock/security/glass, /obj/machinery/door/airlock/public/glass)

@@ -126,6 +126,7 @@
 	. = ..()
 	SSstation.announcer = /datum/centcom_announcer/medbot
 
+/*
 /datum/station_trait/colored_assistants
 	name = "Colored Assistants"
 	trait_type = STATION_TRAIT_NEUTRAL
@@ -138,7 +139,7 @@
 
 	var/new_colored_assistant_type = pick(subtypesof(/datum/colored_assistant) - get_configured_colored_assistant_type())
 	GLOB.colored_assistant = new new_colored_assistant_type
-
+*/
 /datum/station_trait/cargorilla
 	name = "Cargo Gorilla"
 	trait_type = STATION_TRAIT_NEUTRAL
