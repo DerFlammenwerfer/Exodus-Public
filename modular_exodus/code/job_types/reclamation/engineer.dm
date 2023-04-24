@@ -2,7 +2,7 @@
 	title = JOB_ENGINEER
 	description = "Maintain the foundations of Odessa and aid its \
 		expanding frontier as a handy contractor of the FRC."
-	department_head = list(JOB_MAYOR)
+	department_head = list(JOB_RECLAIMER)
 	faction = FACTION_STATION
 	total_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SET TO 8, WAS 5
 	spawn_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SEE ABOVE

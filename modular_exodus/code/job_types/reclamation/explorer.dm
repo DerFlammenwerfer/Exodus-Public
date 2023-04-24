@@ -2,7 +2,7 @@
 	title = JOB_EXPLORER
 	description = "Scout, mine, hunt, and salvage as part of \
 		the rank and file of the adventurous FRC."
-	department_head = list(JOB_MAYOR)
+	department_head = list(JOB_RECLAIMER)
 	faction = FACTION_STATION
 	total_positions = 8 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SET TO 8, WAS 5
 	spawn_positions = 8 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SEE ABOVE

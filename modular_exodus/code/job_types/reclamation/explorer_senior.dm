@@ -2,7 +2,7 @@
 	title = JOB_EXPLORER_SENIOR
 	description = "Take on a more specialist role within the FRC, \
 		aiding your efforts as you uncover new frontiers."
-	department_head = list(JOB_MAYOR)
+	department_head = list(JOB_RECLAIMER)
 	faction = FACTION_STATION
 	total_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SET TO 8, WAS 5
 	spawn_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SEE ABOVE
