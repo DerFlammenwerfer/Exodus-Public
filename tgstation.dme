@@ -5135,6 +5135,7 @@
 #include "modular_exodus\code\job_types\civgov\custodian.dm"
 #include "modular_exodus\code\job_types\civgov\mayor.dm"
 #include "modular_exodus\code\job_types\civgov\merchant.dm"
+#include "modular_exodus\code\job_types\civgov\resident.dm"
 #include "modular_exodus\code\job_types\civgov\tavernkeeper.dm"
 #include "modular_exodus\code\job_types\civgov\treasurer.dm"
 #include "modular_exodus\code\job_types\reclamation\engineer.dm"

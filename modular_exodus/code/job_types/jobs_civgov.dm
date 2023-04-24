@@ -77,3 +77,19 @@
 	minimal_wildcard_access = null
 	template_access = null
 	job = /datum/job/treasurer
+
+/datum/id_trim/job/resident
+	assignment = "Resident"
+	trim_state = "trim_securityofficer"
+	department_color = COLOR_COMMAND_BLUE
+	subdepartment_color = COLOR_SECURITY_RED
+	department_state = "departmenthead"
+	sechud_icon_state = SECHUD_HEAD_OF_SECURITY
+	extra_access = list(ACCESS_TELEPORTER)
+	extra_wildcard_access = list()
+	minimal_access = list(
+		ACCESS_ALL_PERSONAL_LOCKERS,
+		)
+	minimal_wildcard_access = null
+	template_access = null
+	job = /datum/job/resident
