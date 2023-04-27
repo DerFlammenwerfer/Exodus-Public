@@ -4,8 +4,8 @@
 		expanding frontier as a handy contractor of the FRC."
 	department_head = list(JOB_RECLAIMER)
 	faction = FACTION_STATION
-	total_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SET TO 8, WAS 5
-	spawn_positions = 4 //Handled in /datum/controller/occupations/proc/setup_officer_positions() //SKYRAT EDIT: SEE ABOVE
+	total_positions = 4
+	spawn_positions = 4
 	supervisors = "the Reclaimer and the laws of Odessa"
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
@@ -18,7 +18,7 @@
 
 	display_order = JOB_DISPLAY_ORDER_ENGINEER
 	departments_list = list(
-		/datum/job_department/reclamation,
+		/datum/job_department/reclamation
 		)
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
@@ -36,20 +36,17 @@
 	jobtype = /datum/job/engineer
 
 	id_trim = /datum/id_trim/job/engineer
-	uniform = null
-	suit = null
-	suit_store = null
-	backpack_contents = null
-	belt = null
-	ears = null
-	gloves = null
-	head = null
-	shoes = null
-	l_pocket = null
-	r_pocket = null
+	uniform = /obj/item/clothing/under/rank/engineering/engineer/exodus
+	belt = /obj/item/storage/belt/utility/full/engi
+	ears = /obj/item/radio/headset/headset_cargo
+	head = /obj/item/clothing/head/utility/hardhat
+	shoes = /obj/item/clothing/shoes/workboots
+	l_pocket = /obj/item/modular_computer/pda/engineering
+	r_pocket = /obj/item/t_scanner
 
-	backpack = null
-	satchel = null
-	duffelbag =null
+	backpack = /obj/item/storage/backpack/industrial
+	satchel = /obj/item/storage/backpack/satchel/eng
+	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
 
-	box = null
+	box = /obj/item/storage/box/survival/engineer
+	pda_slot = ITEM_SLOT_LPOCKET

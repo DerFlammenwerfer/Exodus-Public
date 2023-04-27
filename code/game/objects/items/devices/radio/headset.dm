@@ -182,8 +182,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	keyslot = /obj/item/encryptionkey/headset_rob
 
 /obj/item/radio/headset/headset_med
-	name = "medical radio headset"
-	desc = "A headset for the trained staff of the medbay."
+	name = "JSI radio headset"
+	desc = "A headset used by Joint Survival Initiative personnel."
 	icon_state = "med_headset"
 	keyslot = /obj/item/encryptionkey/headset_med
 
@@ -281,8 +281,8 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	keyslot = /obj/item/encryptionkey/heads/qm
 
 /obj/item/radio/headset/headset_cargo
-	name = "supply radio headset"
-	desc = "A headset used by the QM's slaves."
+	name = "FRC radio headset"
+	desc = "A headset used by Frontier Reclamation Committee personnel."
 	icon_state = "cargo_headset"
 	keyslot = /obj/item/encryptionkey/headset_cargo
 
