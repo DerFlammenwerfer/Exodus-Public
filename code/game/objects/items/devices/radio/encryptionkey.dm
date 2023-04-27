@@ -68,7 +68,7 @@
 	greyscale_colors = "#793a80#dca01b"
 
 /obj/item/encryptionkey/headset_med
-	name = "medical radio encryption key"
+	name = "JSI radio encryption key"
 	icon_state = "cypherkey_medical"
 	channels = list(RADIO_CHANNEL_MEDICAL = 1)
 	greyscale_config = /datum/greyscale_config/encryptionkey_medical
@@ -159,7 +159,7 @@
 	greyscale_colors = "#49241a#dca01b"
 
 /obj/item/encryptionkey/headset_cargo
-	name = "supply radio encryption key"
+	name = "FRC radio encryption key"
 	icon_state = "cypherkey_cargo"
 	channels = list(RADIO_CHANNEL_SUPPLY = 1)
 	greyscale_config = /datum/greyscale_config/encryptionkey_cargo
