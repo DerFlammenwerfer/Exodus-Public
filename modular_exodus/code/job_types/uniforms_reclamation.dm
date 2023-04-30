@@ -34,11 +34,6 @@
 	inhand_icon_state = "gy_suit"
 	armor_type = /datum/armor/engineering_chief_engineer
 
-/datum/armor/engineering_chief_engineer
-	bio = 10
-	fire = 80
-	acid = 40
-
 /obj/item/clothing/under/rank/engineering/chief_engineer/skirt/exodus
 	name = "FRC reclaimer jumpskirt"
 	desc = "A orange and white high-visibility jumpsuit worn by FRC reclaimers."
