@@ -237,3 +237,24 @@
 		/obj/structure/musician/piano,
 		/obj/structure/musician/piano/minimoog,
 	)
+
+/obj/effect/spawner/random/structure/grass
+	name = "grass spawner"
+	loot = list(
+		/obj/structure/flora/bush/fullgrass/style_random,
+		/obj/structure/flora/bush/sparsegrass/style_random,
+	)
+
+/obj/effect/spawner/random/structure/bush
+	name = "grass spawner"
+	loot = list(
+		/obj/structure/flora/bush/grassy/style_random,
+		/obj/structure/flora/bush/sunny/style_random,
+		/obj/structure/flora/bush/ferny/style_random,
+		/obj/structure/flora/bush/generic/style_random,
+		/obj/structure/flora/bush/pale/style_random,
+		/obj/structure/flora/bush/leavy/style_random,
+		/obj/structure/flora/bush/pointy/style_random,
+		/obj/structure/flora/bush/stalky/style_random,
+		/obj/structure/flora/bush/leafy,
+	)
