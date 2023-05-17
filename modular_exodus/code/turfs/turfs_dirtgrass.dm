@@ -113,3 +113,13 @@ var/global/list/GryazEdgeCache
 				if(T)
 					T.overlays += GryazEdgeCache[2**i]
 	return
+
+/turf/open/exodus/floor/gryaz_stone
+	name = "stone"
+	icon = 'modular_exodus/icons/zemlya.dmi'
+	icon_state = "gryaz_stone1"
+	footstep = FOOTSTEP_SAND
+	barefootstep = FOOTSTEP_SAND
+
+/turf/open/exodus/floor/gryaz_stone/New()
+	icon_state = "gryaz_stone[rand(1, 11)]"
